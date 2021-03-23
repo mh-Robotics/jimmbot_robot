@@ -8,18 +8,16 @@
 
   <maintainer email="m.halimi@gmail.com">Mergim Halimi</maintainer>
 
-  <url type="website">todo</url>
-  <url type="bugtracker">todo</url>
-  <url type="repository">todo</url>
+  <url type="website">www.mergimhalimi.com</url>
+  <url type="repository">https://github.com/mh-Robotics/jimmbot_robot</url>
 
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-
-  <exec_depend>jimmbot_bringup</exec_depend>
-  <exec_depend>jimmbot_base</exec_depend>
+  <exec_depend>jimmbot_desktop</exec_depend>
 
   <export>
     <metapackage/>
   </export>
+
 </package>
