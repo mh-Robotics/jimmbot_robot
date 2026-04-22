@@ -7,8 +7,32 @@
       "command": "bash ${workspaceFolder}/src/jimmbot_robot/scripts/setup.sh",
       "presentation": {
         "reveal": "always",
-        "panel": "new",
+        "panel": "shared",
         "clear": true
+      }
+    },
+    {
+      "label": "Clean Setup Workspace",
+      "type": "shell",
+      "command": "bash ${workspaceFolder}/src/jimmbot_robot/scripts/setup.sh clean",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Build Package",
+      "type": "shell",
+      "command": "pkgs=($(colcon list --names-only --base-paths src)); [ ${#pkgs[@]} -eq 0 ] && { echo \"No packages found\"; exit 1; }; echo \"Select package:\"; for i in \"${!pkgs[@]}\"; do echo \"$((i+1))) ${pkgs[$i]}\"; done; read -p \"Enter number: \" idx; pkg=${pkgs[$((idx-1))]}; [ -z \"$pkg\" ] && { echo \"Invalid selection\"; exit 1; }; echo \"Building $pkg\"; colcon build --packages-select \"$pkg\" --symlink-install --parallel-workers $(nproc)",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-c"
+          ]
+        }
       }
     },
     {
@@ -20,7 +44,7 @@
       },
       "presentation": {
         "reveal": "always",
-        "panel": "new",
+        "panel": "shared",
         "clear": true
       }
     },
@@ -34,7 +58,7 @@
       "hide": true,
       "presentation": {
         "reveal": "always",
-        "panel": "new",
+        "panel": "shared",
         "clear": true
       }
     },
@@ -47,7 +71,26 @@
       "dependsOrder": "sequence",
       "presentation": {
         "reveal": "always",
-        "panel": "new",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Cleanup VSCode Bridge Leak",
+      "type": "shell",
+      "command": "count=$(pgrep -af '/home/dev/.vscode-server/bin/.*/node -e' | grep -c 'net.createConnection' || true); rss=$(ps -eo rss,args | grep '/home/dev/.vscode-server/bin/.*/node -e' | grep 'net.createConnection' | grep -v grep | awk '{sum+=$1} END {printf \"%.1f\", sum/1024}' || true); echo \"Before: count=$count rss=${rss:-0}MiB\"; pkill -f '/home/dev/.vscode-server/bin/.*/node -e .*net\\.createConnection' || true; sleep 1; count2=$(pgrep -af '/home/dev/.vscode-server/bin/.*/node -e' | grep -c 'net.createConnection' || true); rss2=$(ps -eo rss,args | grep '/home/dev/.vscode-server/bin/.*/node -e' | grep 'net.createConnection' | grep -v grep | awk '{sum+=$1} END {printf \"%.1f\", sum/1024}' || true); echo \"After: count=$count2 rss=${rss2:-0}MiB\"; free -h",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-c"
+          ]
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
         "clear": true
       }
     }

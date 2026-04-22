@@ -1,0 +1,39 @@
+{
+  "python.analysis.extraPaths": [
+    "/opt/ros/kilted/lib/python3.12/site-packages"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/opt/ros/kilted/lib/python3.12/site-packages"
+  ],
+  "ROS2.distro": "kilted",
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "files.watcherExclude": {
+    "build/**": true,
+    "install/**": true,
+    "log/**": true,
+    "src/jimmbot_robot/.meta_workspaces/**": true,
+    "**/.git/**": true,
+    "**/.cache/**": true
+  },
+  "files.exclude": {
+    "build": true,
+    "install": true,
+    "log": true,
+    "src/jimmbot_robot/.meta_workspaces": true
+  },
+  "search.exclude": {
+    "build/**": true,
+    "install/**": true,
+    "log/**": true,
+    "src/jimmbot_robot/.meta_workspaces/**": true
+  },
+  "search.followSymlinks": false,
+  "C_Cpp.workspaceParsingPriority": "low",
+  "C_Cpp.intelliSenseCacheSize": 256,
+  "cmake.ignoreCMakeListsMissing": true,
+  "chat.tools.terminal.autoApprove": {
+    "true": true,
+    "continue": true,
+    "colcon": true
+  }
+}
