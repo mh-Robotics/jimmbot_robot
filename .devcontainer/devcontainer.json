@@ -1,0 +1,35 @@
+{
+  "name": "jimmBOT ROS2 Kilted",
+  "build": {
+    "dockerfile": "Dockerfile.devcontainer",
+    "args": {
+      "USER_UID": "1000",
+      "USER_GID": "1000"
+    }
+  },
+  "workspaceFolder": "/workspaces",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src/jimmbot_robot,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-iot.vscode-ros",
+        "llvm-vs-code-extensions.vscode-clangd"
+      ]
+    }
+  },
+  "postCreateCommand": "sudo chown -R dev:dev /workspaces || true",
+  "postStartCommand": "bash /workspaces/src/jimmbot_robot/scripts/setup.sh",
+  "remoteUser": "dev",
+  "containerUser": "dev",
+  "updateRemoteUserUID": true,
+  "mounts": [
+    "source=${localWorkspaceFolder}/.vscode,target=/workspaces/.vscode,type=bind",
+    "source=/home/jimmyhalimi/.1password/agent.sock,target=/ssh-agent,type=bind",
+    "source=jimmbot-vscode,target=/home/dev/.vscode,type=volume"
+  ],
+  "remoteEnv": {
+    "ROS_DISTRO": "kilted",
+    "SSH_AUTH_SOCK": "/ssh-agent"
+  }
+}

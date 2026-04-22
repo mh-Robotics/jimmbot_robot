@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Setup Workspace",
+      "type": "shell",
+      "command": "bash ${workspaceFolder}/src/jimmbot_robot/scripts/setup.sh",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "colcon build --symlink-install --parallel-workers $(nproc)",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
+      "label": "Clean Workspace",
+      "type": "shell",
+      "command": "rm -rf build install log",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "hide": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
+      "label": "Clean Build",
+      "dependsOn": [
+        "Clean Workspace",
+        "Build"
+      ],
+      "dependsOrder": "sequence",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    }
+  ]
+}
