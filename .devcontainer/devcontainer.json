@@ -1,0 +1,61 @@
+{
+  "name": "jimmBOT ROS2 Kilted",
+  "build": {
+    "dockerfile": "Dockerfile.devcontainer"
+  },
+  "workspaceFolder": "/workspaces",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src/jimmbot_robot,type=bind",
+  "remoteUser": "dev",
+  "remoteEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}",
+    "QT_X11_NO_MITSHM": "1",
+    "ROS_DISTRO": "kilted",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:path=${remoteEnv:XDG_RUNTIME_DIR}/bus",
+    "DBUS_SYSTEM_BUS_ADDRESS": "unix:path=/run/dbus/system_bus_socket",
+    "SHELL": "/bin/bash"
+  },
+  "containerUser": "dev",
+  "updateRemoteUserUID": true,
+  "mounts": [
+    "source=jimmbot-vscode,target=/home/dev/.vscode,type=volume",
+    "source=${localEnv:HOME}/.1password/agent.sock,target=/home/dev/.1password/agent.sock,type=bind",
+    "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,type=bind,readonly",
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+    "source=${localEnv:XDG_RUNTIME_DIR}/bus,target=/run/user/1000/bus,type=bind",
+    "source=/run/dbus/system_bus_socket,target=/run/dbus/system_bus_socket,type=bind"
+  ],
+  "runArgs": [
+    "--net=host",
+    "--ipc=host",
+    "--group-add=video",
+    "--cap-add=SYS_ADMIN",
+    "--cap-add=SYS_PTRACE",
+    "--cap-add=SYS_NICE",
+    "--cap-add=IPC_LOCK",
+    "--cap-add=NET_ADMIN",
+    "--device=/dev/dri",
+    "--device=/dev/mem",
+    "--ulimit=memlock=-1",
+    "--ulimit=stack=67108864",
+    "--ulimit=nofile=65536"
+  ],
+  "initializeCommand": "mkdir -p ${HOME}/.1password && [ -e ${HOME}/.1password/agent.sock ] || touch ${HOME}/.1password/agent.sock",
+  "postCreateCommand": "set -e && sudo chown -R dev:dev /workspaces && echo 'Workspace ownership transferred successfully'",
+  "postStartCommand": "bash /workspaces/src/jimmbot_robot/scripts/setup.sh && echo 'Container startup complete'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "davidanson.vscode-markdownlint",
+        "hbenl.vscode-test-explorer",
+        "ibm.output-colorizer",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "ms-azuretools.vscode-containers",
+        "ms-python.python",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode-remote.remote-containers",
+        "ranch-hand-robotics.rde-pack",
+        "shardulm94.trailing-spaces"
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+FROM ros:kilted
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+ARG USER_UID=1000
+ARG USER_GID=1000
+ARG USERNAME=dev
+
+# Reassign UID/GID of default 'ubuntu' user in Ubuntu 24.04
+RUN if id -u ubuntu &>/dev/null; then \
+  usermod -u 2000 -d /home/ubuntu ubuntu && \
+  groupmod -g 2000 ubuntu; \
+  fi
+
+RUN groupadd -g ${USER_GID} ${USERNAME} && \
+  useradd -u ${USER_UID} -g ${USER_GID} -m -s /bin/bash ${USERNAME}
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  bash-completion \
+  build-essential \
+  ca-certificates \
+  clang \
+  clang-format \
+  clang-tidy \
+  curl \
+  git \
+  gnupg \
+  iputils-ping \
+  locales \
+  lsb-release \
+  net-tools \
+  openssh-client \
+  python3-colcon-common-extensions \
+  python3-rosdep \
+  python3-vcstool \
+  ros-kilted-gz-ros2-control \
+  ros-kilted-ros-gz \
+  ros-kilted-xacro \
+  sudo \
+  tree \
+  vim \
+  && rm -rf /var/lib/apt/lists/*
+
+# Gazebo Ionic repository and simulator packages (per Gazebo docs)
+RUN sudo curl -fsSL https://packages.osrfoundation.org/gazebo.gpg \
+  --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
+  apt-get update && apt-get install -y --no-install-recommends \
+  gz-ionic && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8 && \
+  update-locale LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+
+RUN echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} && \
+  chmod 0440 /etc/sudoers.d/${USERNAME}
+
+USER ${USERNAME}
+WORKDIR /workspaces
+
+RUN git config --global --add safe.directory /workspaces && \
+  echo "source /opt/ros/kilted/setup.bash" >> ~/.bashrc && \
+  echo "if [ -f /etc/bash_completion ]; then source /etc/bash_completion; fi" >> ~/.bashrc
