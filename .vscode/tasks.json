@@ -24,7 +24,7 @@
     {
       "label": "Build Package",
       "type": "shell",
-      "command": "pkgs=($(colcon list --names-only --base-paths src)); [ ${#pkgs[@]} -eq 0 ] && { echo \"No packages found\"; exit 1; }; echo \"Select package:\"; for i in \"${!pkgs[@]}\"; do echo \"$((i+1))) ${pkgs[$i]}\"; done; read -p \"Enter number: \" idx; pkg=${pkgs[$((idx-1))]}; [ -z \"$pkg\" ] && { echo \"Invalid selection\"; exit 1; }; echo \"Building $pkg\"; colcon build --packages-select \"$pkg\" --symlink-install --parallel-workers $(nproc)",
+      "command": "pkgs=($(colcon list --names-only --base-paths src)); [ ${#pkgs[@]} -eq 0 ] && { echo \"No packages found\"; exit 1; }; echo \"Select package:\"; for i in \"${!pkgs[@]}\"; do echo \"$((i+1))) ${pkgs[$i]}\"; done; read -p \"Enter number: \" idx; pkg=${pkgs[$((idx-1))]}; [ -z \"$pkg\" ] && { echo \"Invalid selection\"; exit 1; }; echo \"Building $pkg\"; colcon build --packages-select \"$pkg\" --symlink-install --parallel-workers $(nproc) --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && python3 ${workspaceFolder}/src/jimmbot_robot/scripts/merge_compile_commands.py ${workspaceFolder}/build",
       "options": {
         "cwd": "${workspaceFolder}",
         "shell": {
@@ -38,7 +38,7 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "colcon build --symlink-install --parallel-workers $(nproc)",
+      "command": "colcon build --symlink-install --parallel-workers $(nproc) --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && python3 ${workspaceFolder}/src/jimmbot_robot/scripts/merge_compile_commands.py ${workspaceFolder}/build",
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -88,6 +88,45 @@
           ]
         }
       },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Stop jimmbot Gazebo",
+      "type": "shell",
+      "command": "current_pid=$$; patterns=('ros2 launch jimmbot_gazebo jimmbot_(simple|empty)_world\\.launch(\\.py)?' 'gz sim .*jimmbot_gazebo/share/jimmbot_gazebo/media/worlds/simple\\.world' 'gz sim .*jimmbot_gazebo/share/jimmbot_gazebo/media/worlds/empty\\.world' 'gz sim .*empty\\.sdf'); for pattern in \"${patterns[@]}\"; do while read -r pid; do [[ -z \"$pid\" || \"$pid\" == \"$current_pid\" ]] && continue; kill \"$pid\" 2>/dev/null || true; done < <(pgrep -f -- \"$pattern\" || true); done",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-c"
+          ]
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Launch jimmbot Empty World",
+      "type": "shell",
+      "command": "source /opt/ros/$ROS_DISTRO/setup.bash && source ${workspaceFolder}/install/setup.bash && ros2 launch jimmbot_gazebo jimmbot_empty_world.launch.py",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-c"
+          ]
+        }
+      },
+      "isBackground": true,
       "presentation": {
         "reveal": "always",
         "panel": "shared",

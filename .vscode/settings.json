@@ -16,24 +16,28 @@
     "**/.cache/**": true
   },
   "files.exclude": {
-    "build": true,
-    "install": true,
-    "log": true,
-    "src/jimmbot_robot/.meta_workspaces": true
+    "src/jimmbot_robot/.meta_workspaces": true,
+    "src/jimmbot_robot/.vscode": true
   },
   "search.exclude": {
     "build/**": true,
     "install/**": true,
     "log/**": true,
-    "src/jimmbot_robot/.meta_workspaces/**": true
+    "src/jimmbot_robot/.meta_workspaces/**": true,
+    "src/jimmbot_robot/.vscode/**": true,
   },
   "search.followSymlinks": false,
+  "C_Cpp.intelliSenseEngine": "disabled",
   "C_Cpp.workspaceParsingPriority": "low",
   "C_Cpp.intelliSenseCacheSize": 256,
+  "clangd.arguments": [
+    "--compile-commands-dir=/workspaces/build"
+  ],
   "cmake.ignoreCMakeListsMissing": true,
   "chat.tools.terminal.autoApprove": {
     "true": true,
     "continue": true,
-    "colcon": true
+    "colcon": true,
+    "ros2": true
   }
 }
