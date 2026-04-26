@@ -29,7 +29,6 @@
   "search.followSymlinks": false,
   "C_Cpp.intelliSenseEngine": "disabled",
   "C_Cpp.workspaceParsingPriority": "low",
-  "C_Cpp.intelliSenseCacheSize": 256,
   "clangd.arguments": [
     "--compile-commands-dir=/workspaces/build"
   ],
@@ -39,5 +38,6 @@
     "continue": true,
     "colcon": true,
     "ros2": true
-  }
+  },
+  "cSpell.configFile": ".vscode/cspell.json"
 }

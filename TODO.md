@@ -50,5 +50,43 @@
 - `libEGL ... failed to open /dev/dri/renderD128` is a container GPU/device access warning, not a URDF or TF bug.
 - `QStandardPaths: XDG_RUNTIME_DIR not set` is common in this container and is not the root cause of the RViz/Gazebo TF issues.
 
+## Prepare host
+
+# Install NVIDIA Container Toolkit
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+
+export __NV_PRIME_RENDER_OFFLOAD=1
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+ros2 launch jimmbot_viz jimmbot_view_gz.launch.py
+
+Target repos to keep as-is
+
+jimmbot_description
+jimmbot_gazebo
+jimmbot_viz
+jimmbot_robot
+jimmbot_msgs
+New grouped repos for the rest
+
+jimmbot_controllers
+Keep existing jimmbot_controller package (or rename repo only, package can stay same for now)
+Move jimmbot_bringup here
+Move jimmbot_navigation here
+Move jimmbot_audiofx here (fits behavior/runtime orchestration side)
+jimmbot_hardware
+Move jimmbot_base here
+Move jimmbot_sensors here
+Move jimmbot_middleware here
+
+
 <!-- EOF -->
 

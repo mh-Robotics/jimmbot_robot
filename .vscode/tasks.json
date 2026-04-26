@@ -76,9 +76,9 @@
       }
     },
     {
-      "label": "Cleanup VSCode Bridge Leak",
+      "label": "Kill All ROS/Gazebo Instances",
       "type": "shell",
-      "command": "count=$(pgrep -af '/home/dev/.vscode-server/bin/.*/node -e' | grep -c 'net.createConnection' || true); rss=$(ps -eo rss,args | grep '/home/dev/.vscode-server/bin/.*/node -e' | grep 'net.createConnection' | grep -v grep | awk '{sum+=$1} END {printf \"%.1f\", sum/1024}' || true); echo \"Before: count=$count rss=${rss:-0}MiB\"; pkill -f '/home/dev/.vscode-server/bin/.*/node -e .*net\\.createConnection' || true; sleep 1; count2=$(pgrep -af '/home/dev/.vscode-server/bin/.*/node -e' | grep -c 'net.createConnection' || true); rss2=$(ps -eo rss,args | grep '/home/dev/.vscode-server/bin/.*/node -e' | grep 'net.createConnection' | grep -v grep | awk '{sum+=$1} END {printf \"%.1f\", sum/1024}' || true); echo \"After: count=$count2 rss=${rss2:-0}MiB\"; free -h",
+      "command": "current_pid=$$; patterns=('ros2 ' 'gz sim' 'ros_gz' 'parameter_bridge' 'robot_state_publisher' 'joint_state_publisher' 'rviz2'); echo 'Before:'; pgrep -af 'ros2 |gz sim|ros_gz|parameter_bridge|robot_state_publisher|joint_state_publisher|rviz2' || true; pids=$(for pattern in \"${patterns[@]}\"; do pgrep -f -- \"$pattern\" || true; done | sort -u | grep -vw \"$current_pid\" || true); if [[ -n \"$pids\" ]]; then echo \"Stopping PIDs: $pids\"; kill $pids 2>/dev/null || true; sleep 1; remaining=$(for pattern in \"${patterns[@]}\"; do pgrep -f -- \"$pattern\" || true; done | sort -u | grep -vw \"$current_pid\" || true); if [[ -n \"$remaining\" ]]; then echo \"Force killing PIDs: $remaining\"; kill -9 $remaining 2>/dev/null || true; fi; else echo 'No matching ROS/Gazebo processes found.'; fi; echo 'After:'; pgrep -af 'ros2 |gz sim|ros_gz|parameter_bridge|robot_state_publisher|joint_state_publisher|rviz2' || true",
       "options": {
         "cwd": "${workspaceFolder}",
         "shell": {

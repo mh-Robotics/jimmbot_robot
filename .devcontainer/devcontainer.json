@@ -1,7 +1,12 @@
 {
   "name": "jimmBOT ROS2 Kilted",
   "build": {
-    "dockerfile": "Dockerfile.devcontainer"
+    "dockerfile": "Dockerfile.devcontainer",
+    "args": {
+      "USER_UID": "${localEnv:UID:1000}",
+      "USER_GID": "${localEnv:GID:1000}",
+      "USERNAME": "${localEnv:USER}"
+    }
   },
   "workspaceFolder": "/workspaces",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src/jimmbot_robot,type=bind",
@@ -12,27 +17,27 @@
     "ROS_DISTRO": "kilted",
     "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
     "ROS_DOMAIN_ID": "42",
-    "SHELL": "/bin/bash"
+    "SHELL": "/bin/bash",
+    "NVIDIA_VISIBLE_DEVICES": "all",
+    "NVIDIA_DRIVER_CAPABILITIES": "all"
   },
   "remoteEnv": {
-    "XDG_RUNTIME_DIR": "/run/user/1000",
-    "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
-    "DBUS_SYSTEM_BUS_ADDRESS": "unix:path=/run/dbus/system_bus_socket"
+    "XDG_RUNTIME_DIR": "/tmp/runtime-${localEnv:USER}",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/${localEnv:UID}/bus"
   },
-  "remoteUser": "dev",
-  "containerUser": "dev",
-  "updateRemoteUserUID": true,
+  "remoteUser": "${localEnv:USER}",
+  "containerUser": "${localEnv:USER}",
   "mounts": [
-    // "source=jimmbot-vscode,target=/home/dev/.vscode,type=volume",
-    "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,type=bind,readonly",
-    "source=${localEnv:HOME}/.1password/agent.sock,target=/home/dev/.1password/agent.sock,type=bind",
+    "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind,readonly",
+    "source=${localEnv:HOME}/.1password/agent.sock,target=/home/${localEnv:USER}/.1password/agent.sock,type=bind",
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
-    "source=${localEnv:XDG_RUNTIME_DIR}/bus,target=/run/user/1000/bus,type=bind",
+    "source=${localEnv:XDG_RUNTIME_DIR}/bus,target=/run/user/${localEnv:UID}/bus,type=bind",
     "source=/run/dbus/system_bus_socket,target=/run/dbus/system_bus_socket,type=bind"
   ],
   "runArgs": [
     "--net=host",
-    "--ipc=host"
+    "--ipc=host",
+    "--gpus=all"
   ],
   "initializeCommand": "mkdir -p ${HOME}/.1password && [ -e ${HOME}/.1password/agent.sock ] || touch ${HOME}/.1password/agent.sock",
   "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
@@ -48,7 +53,10 @@
         "ms-python.python",
         "ms-vscode.cpptools-extension-pack",
         "ranch-hand-robotics.rde-pack",
-        "shardulm94.trailing-spaces"
+        "shardulm94.trailing-spaces",
+        "redhat.vscode-xml",
+        "streetsidesoftware.code-spell-checker",
+        "cschlosser.doxdocgen"
       ]
     }
   }
