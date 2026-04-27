@@ -5,7 +5,11 @@
     "dictionaries": [],
     "words": [
         "dbus",
-        "jimmbot"
+        "jimmbot",
+        "kinect",
+        "Mergim",
+        "rclcpp",
+        "ydlidar"
     ],
     "ignoreWords": [],
     "import": []

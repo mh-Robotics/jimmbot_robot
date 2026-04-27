@@ -1,19 +1,4 @@
 repositories:
-  jimmbot_audiofx:
-    type: git
-    url: git@github.com:MH-Robotics/jimmbot_audiofx.git
-    version: kilted
-
-  jimmbot_base:
-    type: git
-    url: git@github.com:MH-Robotics/jimmbot_base.git
-    version: kilted
-
-  jimmbot_bringup:
-    type: git
-    url: git@github.com:MH-Robotics/jimmbot_bringup.git
-    version: kilted
-
   jimmbot_controller:
     type: git
     url: git@github.com:MH-Robotics/jimmbot_controller.git
@@ -29,6 +14,11 @@ repositories:
     url: git@github.com:MH-Robotics/jimmbot_gazebo.git
     version: kilted
 
+  jimmbot_hardware:
+    type: git
+    url: git@github.com:MH-Robotics/jimmbot_hardware.git
+    version: kilted
+
   jimmbot_middleware:
     type: git
     url: git@github.com:MH-Robotics/jimmbot_middleware.git
@@ -42,11 +32,6 @@ repositories:
   jimmbot_navigation:
     type: git
     url: git@github.com:MH-Robotics/jimmbot_navigation.git
-    version: kilted
-
-  jimmbot_sensors:
-    type: git
-    url: git@github.com:MH-Robotics/jimmbot_sensors.git
     version: kilted
 
   jimmbot_viz:

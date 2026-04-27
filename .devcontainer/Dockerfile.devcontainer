@@ -29,6 +29,7 @@ RUN apt-get update && \
   cmake \
   git \
   gnupg \
+  libusb-1.0-0-dev \
   ninja-build \
   openssh-client \
   && rm -rf /var/lib/apt/lists/*
@@ -56,9 +57,11 @@ RUN apt-get update && \
   locales \
   lsb-release \
   net-tools \
+  software-properties-common \
   sudo \
   tar \
   tree \
+  usbutils \
   vim \
   wget \
   && rm -rf /var/lib/apt/lists/*
@@ -79,6 +82,8 @@ RUN apt-get update && \
   ros-kilted-joint-state-broadcaster \
   ros-kilted-joint-state-publisher \
   ros-kilted-joint-state-publisher-gui \
+  ros-kilted-joy \
+  ros-kilted-joy-linux \
   ros-kilted-nav2-bringup \
   ros-kilted-nav2-rviz-plugins \
   ros-kilted-openni2-camera \
@@ -90,8 +95,23 @@ RUN apt-get update && \
   ros-kilted-rviz-imu-plugin \
   ros-kilted-rviz2 \
   ros-kilted-slam-toolbox \
+  ros-kilted-teleop-twist-joy \
+  ros-kilted-teleop-twist-keyboard \
   ros-kilted-xacro \
   && rm -rf /var/lib/apt/lists/*
+
+# Install Kvaser CANLIB SDK userspace package for ROS2 kvaser_interface.
+# RUN add-apt-repository -y ppa:astuff/kvaser-linux && \
+#   apt-get update && \
+#   apt-get install -y --no-install-recommends kvaser-canlib-dev && \
+#   rm -rf /var/lib/apt/lists/*
+
+# Install YDLidar SDK from source so FindPackage(ydlidar_sdk) works in the workspace.
+RUN git clone --depth 1 https://github.com/YDLIDAR/YDLidar-SDK.git /tmp/YDLidar-SDK && \
+  cmake -S /tmp/YDLidar-SDK -B /tmp/YDLidar-SDK/build -DCMAKE_BUILD_TYPE=Release && \
+  cmake --build /tmp/YDLidar-SDK/build -j"$(nproc)" && \
+  cmake --install /tmp/YDLidar-SDK/build && \
+  rm -rf /tmp/YDLidar-SDK
 
 # Gazebo Ionic repository and simulator packages
 RUN sudo curl -fsSL https://packages.osrfoundation.org/gazebo.gpg \

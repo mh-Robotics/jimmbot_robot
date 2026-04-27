@@ -6,11 +6,10 @@
         "limitSymbolsToIncludedHeaders": false
       },
       "includePath": [
+        "/workspaces/install/jimmbot_hardware/include/**",
         "/workspaces/install/jimmbot_msgs/include/**",
         "/opt/ros/kilted/include/**",
-        "/workspaces/src/jimmbot_audiofx/include/**",
-        "/workspaces/src/jimmbot_base/include/**",
-        "/workspaces/src/jimmbot_sensors/include/**",
+        "/workspaces/src/jimmbot_hardware/include/**",
         "/usr/include/**"
       ],
       "name": "ros2",

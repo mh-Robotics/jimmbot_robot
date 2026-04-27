@@ -95,28 +95,9 @@
       }
     },
     {
-      "label": "Stop jimmbot Gazebo",
+      "label": "Launch jimmbot View GZ",
       "type": "shell",
-      "command": "current_pid=$$; patterns=('ros2 launch jimmbot_gazebo jimmbot_(simple|empty)_world\\.launch(\\.py)?' 'gz sim .*jimmbot_gazebo/share/jimmbot_gazebo/media/worlds/simple\\.world' 'gz sim .*jimmbot_gazebo/share/jimmbot_gazebo/media/worlds/empty\\.world' 'gz sim .*empty\\.sdf'); for pattern in \"${patterns[@]}\"; do while read -r pid; do [[ -z \"$pid\" || \"$pid\" == \"$current_pid\" ]] && continue; kill \"$pid\" 2>/dev/null || true; done < <(pgrep -f -- \"$pattern\" || true); done",
-      "options": {
-        "cwd": "${workspaceFolder}",
-        "shell": {
-          "executable": "/bin/bash",
-          "args": [
-            "-c"
-          ]
-        }
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "clear": true
-      }
-    },
-    {
-      "label": "Launch jimmbot Empty World",
-      "type": "shell",
-      "command": "source /opt/ros/$ROS_DISTRO/setup.bash && source ${workspaceFolder}/install/setup.bash && ros2 launch jimmbot_gazebo jimmbot_empty_world.launch.py",
+      "command": "source /opt/ros/$ROS_DISTRO/setup.bash && source ${workspaceFolder}/install/setup.bash && ros2 launch jimmbot_viz jimmbot_view_gz.launch.py",
       "options": {
         "cwd": "${workspaceFolder}",
         "shell": {

@@ -39,5 +39,13 @@
     "colcon": true,
     "ros2": true
   },
-  "cSpell.configFile": ".vscode/cspell.json"
+  "cSpell.configFile": ".vscode/cspell.json",
+  "cSpell.words": [
+    "Halimi"
+  ],
+  "python.testing.pytestArgs": [
+    "build"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

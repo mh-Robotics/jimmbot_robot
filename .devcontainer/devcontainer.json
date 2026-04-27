@@ -37,6 +37,7 @@
   "runArgs": [
     "--net=host",
     "--ipc=host",
+    "--device=/dev/bus/usb:/dev/bus/usb",
     "--gpus=all"
   ],
   "initializeCommand": "mkdir -p ${HOME}/.1password && [ -e ${HOME}/.1password/agent.sock ] || touch ${HOME}/.1password/agent.sock",
@@ -46,7 +47,7 @@
     "vscode": {
       "extensions": [
         "davidanson.vscode-markdownlint",
-        "hbenl.vscode-test-explorer",
+        "matepek.vscode-catch2-test-adapter",
         "ibm.output-colorizer",
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-azuretools.vscode-containers",

@@ -2,6 +2,15 @@
 
 Devcontainer and workspace bootstrap for jimmBOT on ROS 2 kilted.
 
+## Dependencies
+
+Before starting, make sure the following are installed on your host machine:
+
+- **Docker**
+- **VS Code**
+- **Dev Containers extension**
+- **NVIDIA Container Toolkit**: If you want NVIDIA Gpu in the container
+
 ## Quick start
 
 Use VS Code with the Dev Containers extension installed.
@@ -29,6 +38,10 @@ Below is a list of tasks configured for this project:
 - **Clean Build**: Cleans and rebuilds the workspace
 
 - **Build Package**: Builds one selected package
+
+- **Launch jimmbot View GZ**: Launches the jimmBOT visualization stack with Gazebo
+
+- **Kill All ROS/Gazebo Instances**: Stops any running ROS 2, Gazebo, bridge, and RViz processes from previous sessions
 
 ## SSH auth (1Password optional)
 
